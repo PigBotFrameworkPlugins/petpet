@@ -39,7 +39,7 @@ def make_jpg_or_gif(meta_data, img, func, gif_zoom=1, gif_max_frames=50) -> Byte
     """
     image = img.image
     if not getattr(image, "is_animated", False):
-        return go.send(meta_data, '[CQ:image,file=file://{0}]'.format(func(img.convert("RGBA")).save_jpg()))
+        return go.send(meta_data, '[CQ:image,file=file:///www/gch/python/resources/createimg/{0}]'.format(func(img.convert("RGBA")).save_jpg()))
     else:
         index = range(image.n_frames)
         ratio = image.n_frames / gif_max_frames
@@ -77,6 +77,9 @@ def GetImage(meta_data):
     # open as a PIL image object
     #以一个PIL图像对象打开
     return BuildImage.open(data_stream)
+    
+def save_and_send(meta_data, frame):
+    go.send(meta_data, '[CQ:image,file=file:///www/gch/python/resources/createimg/{0}]'.format(frame.save_jpg()))
 
 def petpet(meta_data):
     img = GetImage(meta_data)
@@ -145,7 +148,7 @@ def littleangel(meta_data):
     except ValueError:
         return go.send(meta_data, NAME_TOO_LONG)
 
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
 
 def police1(meta_data):
     img = GetImage(meta_data)
@@ -153,7 +156,7 @@ def police1(meta_data):
     frame = load_image("police/1.png")
     frame.paste(img, (37, 291), below=True)
 
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
     
 def coupon(meta_data):
     userid = meta_data.get('message')
@@ -180,7 +183,7 @@ def coupon(meta_data):
     frame.paste(img, (164, 85), alpha=True)
     frame.paste(text_img.rotate(22, expand=True), (94, 108), alpha=True)
     
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
     
 def listen_music(meta_data):
     img = GetImage(meta_data).convert("RGBA")
@@ -276,7 +279,7 @@ def my_friend(meta_data):
     for dialog in dialogs:
         frame.paste(dialog, (0, current_h))
         current_h += dialog.height
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
 
 def kiss(meta_data):
     self_head = GetImage({'message':str(meta_data.get('se').get('user_id'))}).convert("RGBA").circle().resize((40, 40))
@@ -373,7 +376,7 @@ def rip(meta_data):
     frame = load_image("rip/0.png")
     frame.paste(img.rotate(24, expand=True), (-5, 355), below=True)
     frame.paste(img.rotate(-11, expand=True), (649, 310), below=True)
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
     
 def crawl(meta_data):
     total_num = 92
@@ -382,13 +385,13 @@ def crawl(meta_data):
     img = GetImage(meta_data).convert("RGBA").circle().resize((100, 100))
     frame = load_image(f"crawl/{num:02d}.jpg")
     frame.paste(img, (0, 400), alpha=True)
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
     
 def support(meta_data):
     img = GetImage(meta_data).convert("RGBA").square().resize((815, 815)).rotate(23, expand=True)
     frame = load_image("support/0.png")
     frame.paste(img, (-172, -17), below=True)
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
     
 def always(meta_data):
     def make(img: BuildImage) -> BuildImage:
@@ -444,13 +447,13 @@ def dont_touch(meta_data):
     img = GetImage(meta_data).convert("RGBA").square().resize((170, 170))
     frame = load_image("dont_touch/0.png")
     frame.paste(img, (23, 231), alpha=True)
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
     
 def alike(meta_data):
     img = GetImage(meta_data).convert("RGBA").square().resize((90, 90))
     frame = load_image("alike/0.png")
     frame.paste(img, (131, 14), alpha=True)
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
     
 def play_game(meta_data):
     text = "来玩休闲游戏啊"
@@ -537,7 +540,7 @@ def police(meta_data):
     img = GetImage(meta_data).convert("RGBA").square().resize((245, 245))
     frame = load_image("police/0.png")
     frame.paste(img, (224, 46), below=True)
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
     
 def ask(meta_data):
     img = GetImage(meta_data).resize_width(640)
@@ -602,7 +605,7 @@ def ask(meta_data):
     except ValueError:
         return go.send(meta_data, NAME_TOO_LONG)
     frame.paste(img, (sep_w, sep_h))
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
     
 def prpr(meta_data):
     frame = load_image("prpr/0.png")
@@ -644,7 +647,7 @@ def wallpaper(meta_data):
 def china_flag(meta_data):
     frame = load_image("china_flag/0.png")
     frame.paste(img.convert("RGBA").resize(frame.size, keep_ratio=True), below=True)
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
     
 def make_friend(meta_data):
     img = GetImage(meta_data).convert("RGBA")
@@ -674,20 +677,20 @@ def make_friend(meta_data):
 
     text_img = BuildImage(text_img).rotate(9, expand=True)
     frame.paste(text_img, (710, frame.height - 308), alpha=True)
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
     
 def back_to_work(meta_data):
     frame = load_image("back_to_work/0.png")
     img = GetImage(meta_data).convert("RGBA").resize((220, 310), keep_ratio=True, direction="north")
     frame.paste(img.rotate(25, expand=True), (56, 32), below=True)
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
 
 
 def perfect(meta_data):
     frame = load_image("perfect/0.png")
     img = GetImage(meta_data).convert("RGBA").resize((310, 460), keep_ratio=True, inside=True)
     frame.paste(img, (313, 64), alpha=True)
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
     
 def follow(meta_data):
     img = GetImage(meta_data).circle().resize((200, 200))
@@ -709,13 +712,13 @@ def follow(meta_data):
     frame.paste(img, (50, 50), alpha=True)
     frame.paste(name_img, (300, 135 - name_img.height), alpha=True)
     frame.paste(follow_img, (300, 145), alpha=True)
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
     
 def paint(meta_data):
     img = GetImage(meta_data).convert("RGBA").resize((117, 135), keep_ratio=True)
     frame = load_image("paint/0.png")
     frame.paste(img.rotate(4, expand=True), (95, 107), below=True)
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
 
 def shock(meta_data):
     img = GetImage(meta_data).convert("RGBA").resize((300, 300))
@@ -759,7 +762,7 @@ def dianzhongdian(meta_data):
     frame.paste(img, alpha=True)
     frame.paste(text_img1, (0, img.height), alpha=True)
     frame.paste(text_img2, (0, img.height + 60), alpha=True)
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
     
 def funny_mirror(meta_data):
     img = GetImage(meta_data).convert("RGBA").square().resize((500, 500))
@@ -844,7 +847,7 @@ def symmetric(meta_data):
     frame = BuildImage.new("RGBA", mode.frame_size)
     frame.paste(first.crop(mode.size1), mode.pos1)
     frame.paste(second.crop(mode.size2), mode.pos2)
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
     
 def safe_sense(meta_data):
     img = GetImage(meta_data).convert("RGBA").resize((215, 343), keep_ratio=True)
@@ -862,7 +865,7 @@ def safe_sense(meta_data):
         )
     except ValueError:
         return go.send(mmeta_data, TEXT_TOO_LONG)
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
     
 def always_like(meta_data):
     img = GetImage(meta_data).convert("RGBA")
@@ -899,7 +902,7 @@ def always_like(meta_data):
         (10 + random.randint(0, 50), 20 + random.randint(0, 70)),
         alpha=True,
     )
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
     
 def interview(meta_data):
     self_img = load_image("interview/huaji.png")
@@ -918,7 +921,7 @@ def interview(meta_data):
         )
     except ValueError:
         return go.send(meta_data, TEXT_TOO_LONG)
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
     
 def punch(meta_data):
     img = GetImage(meta_data).convert("RGBA").square().resize((260, 260))
@@ -957,7 +960,7 @@ def cyan(meta_data):
         stroke_ratio=0.06,
         stroke_fill=color,
     )
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
 
 def pound(meta_data):
     img = GetImage(meta_data).convert("RGBA").square()
@@ -992,14 +995,14 @@ def need(meta_data):
     img = GetImage(meta_data).convert("RGBA").square().resize((115, 115))
     frame = load_image("need/0.png")
     frame.paste(img, (327, 232), below=True)
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
 
 def cover_face(meta_data):
     points = ((15, 15), (448, 0), (445, 456), (0, 465))
     img = GetImage(meta_data).convert("RGBA").square().resize((450, 450)).perspective(points)
     frame = load_image("cover_face/0.png")
     frame.paste(img, (120, 150), below=True)
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
     
 def knock(meta_data):
     img = GetImage(meta_data).convert("RGBA").square()
@@ -1036,14 +1039,14 @@ def whyatme(meta_data):
     img = GetImage(meta_data).convert("RGBA").resize((265, 265), keep_ratio=True)
     frame = load_image("whyatme/0.png")
     frame.paste(img, (42, 13), below=True)
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
 
 
 def decent_kiss(meta_data):
     img = GetImage(meta_data).convert("RGBA").resize((589, 340), keep_ratio=True)
     frame = load_image("decent_kiss/0.png")
     frame.paste(img, (0, 91), below=True)
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
 
 
 def jiujiu(meta_data):
@@ -1110,7 +1113,7 @@ def distracted(meta_data):
     frame = load_image("distracted/1.png")
     label = load_image("distracted/0.png")
     frame.paste(img, below=True).paste(label, (140, 320), alpha=True)
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
 
 def marriage(meta_data):
     img = GetImage(meta_data).convert("RGBA").resize_height(1080)
@@ -1126,7 +1129,7 @@ def marriage(meta_data):
     frame.paste(left, alpha=True).paste(
         right, (frame.width - right.width, 0), alpha=True
     )
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
 
 def thinkwhat(meta_data):
     frame = load_image("thinkwhat/0.png")
@@ -1187,13 +1190,13 @@ def keepaway(meta_data):
     for n in range(num_left):
         paste(trans(imgs[-1], n + num_per_user))
 
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
 
 def painter(meta_data):
     img = GetImage(meta_data).convert("RGBA").resize((240, 345), keep_ratio=True)
     frame = load_image("painter/0.png")
     frame.paste(img, (125, 91), below=True)
-    go.send(meta_data, '[CQ:image,file=file://{0}]'.format(frame.save_jpg()))
+    save_and_send(meta_data, frame)
 
 def repeat(meta_data):
     users = [GetImage(meta_data)]
